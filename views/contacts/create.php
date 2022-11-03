@@ -25,19 +25,23 @@
                 <div class="col-md-6">
                     <label for="first_name" class="form-label">First name:</label>
                     <input type="text" class="form-control" placeholder="Jane" id="first_name" required>
+                    <div class="invalid-feedback"></div>
                 </div>
                 <div class="col-md-6">
                     <label for="last_name" class="form-label">Last name:</label>
                     <input type="text" class="form-control" placeholder="Doe" id="last_name" required>
+                    <div class="invalid-feedback"></div>
                 </div>
 
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" class="form-control" placeholder="example@example.com" id="email" required>
+                    <div class="invalid-feedback"></div>
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>
                     <input type="text" placeholder="123 123 123" class="form-control" id="phone" required>
+                    <div class="invalid-feedback"></div>
                 </div>
             </div>
 

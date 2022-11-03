@@ -1,15 +1,17 @@
 window.addEventListener('DOMContentLoaded', function () {
     const button = document.querySelector("#createContact");
+    const form = button.closest('form');
 
     button.addEventListener('click', () => {
         const req = new XMLHttpRequest();
 
         req.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
+                form.classList.remove('was-validated');
                 const resp = JSON.parse(this.response);
 
                 if(resp.success) {
-                    button.closest('form').reset();
+                    form.reset();
 
                     button.classList.remove('btn-dark');
                     button.classList.add('btn-success');
@@ -20,6 +22,19 @@ window.addEventListener('DOMContentLoaded', function () {
                         button.classList.add('btn-dark');
                         button.innerHTML = 'Create new contact';
                     }, 1500);
+                } else if (resp.errors != null) {
+                    const keys = Object.keys(resp.errors);
+
+                    if(keys.length > 0) {
+                        form.classList.add('was-validated');
+
+                        keys.forEach(k => {
+                            document.querySelector(`#${k}`)
+                                .parentElement
+                                .querySelector('.invalid-feedback')
+                                .textContent = resp.errors[k];
+                        });
+                    }
                 }
             }
         }
