@@ -37,6 +37,21 @@ class ValidatorProcessor
     }
 
     /**
+     * @param string $fieldName
+     * @return mixed
+     */
+    private function getValueForFieldName(string $fieldName) : mixed
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            return $_POST[$fieldName];
+        } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            return $_GET[$fieldName];
+        }
+
+        return null;
+    }
+
+    /**
      * @param array $data
      * @return $this
      */
@@ -49,7 +64,7 @@ class ValidatorProcessor
          * @var Validator $validator
          */
         foreach ($data as $fieldName => $validators) {
-            $value = $_POST[$fieldName];
+            $value = $this->getValueForFieldName($fieldName);
 
             foreach ($validators as $validator) {
                 if($validator->isValid($value)) {
