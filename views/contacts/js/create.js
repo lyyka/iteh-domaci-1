@@ -14,15 +14,13 @@ window.addEventListener('DOMContentLoaded', function () {
                 if(resp.success) {
                     form.reset();
 
-                    button.classList.remove('btn-dark');
-                    button.classList.add('btn-success');
-                    button.innerHTML = 'Success!';
+                    const toastEl = document.querySelector("#contactCreateSuccess");
+                    toastEl.style.display = 'flex';
 
                     window.setTimeout(function() {
-                        button.classList.remove('btn-success');
-                        button.classList.add('btn-dark');
-                        button.innerHTML = 'Create new contact';
-                    }, 1500);
+                        toastEl.style.display = 'none';
+                    }, 5000);
+
                 } else if (resp.errors) {
                     const keys = Object.keys(resp.errors);
 
@@ -37,11 +35,15 @@ window.addEventListener('DOMContentLoaded', function () {
                         });
                     }
                 } else if (resp.message) {
-                    toastEl
-                        .querySelector('.toast-body')
-                        .textContent = resp.message;
 
-                    (new bootstrap.Toast(toastEl)).show();
+                    const toastEl = document.querySelector("#contactCreateException");
+                    toastEl.textContent = resp.message;
+                    toastEl.style.display = 'flex';
+
+                    window.setTimeout(function() {
+                        toastEl.style.display = 'none';
+                    }, 5000);
+
                 }
             }
         }
