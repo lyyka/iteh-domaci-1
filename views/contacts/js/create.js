@@ -5,7 +5,9 @@ window.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', () => {
         const req = new XMLHttpRequest();
 
-        const id = document.querySelector('#id').value;
+        const idField = document.querySelector('#id');
+        const id = idField ? idField.value : '';
+
         const firstName = document.querySelector('#first_name').value;
         const lastName = document.querySelector('#last_name').value;
         const email = document.querySelector('#email').value;

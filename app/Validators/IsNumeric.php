@@ -11,6 +11,6 @@ class IsNumeric implements Validator
 
     public function getFailureMessage(string $fieldName): string
     {
-        return "Field $fieldName must be an integer.";
+        return "Field $fieldName must be a numeric value.";
     }
 }
