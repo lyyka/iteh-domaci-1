@@ -1,15 +1,16 @@
 <?php
 
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Model.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/ContactModelRepo.php";
 
-class ContactModel
+class ContactModel extends Model
 {
-    private ?int $id = null;
     private string $firstName;
     private string $lastName;
     private string $email;
     private string $phone;
     private string $createdAtTimestamp;
+    private string $updatedAtTimestamp;
 
     /**
      * @throws Exception
@@ -29,19 +30,19 @@ class ContactModel
     }
 
     /**
-     * @return int|null
+     * @return string
      */
-    public function getId(): ?int
+    public function getTableName(): string
     {
-        return $this->id;
+        return 'contacts';
     }
 
     /**
-     * @param int|null $id
+     * @return string
      */
-    public function setId(?int $id): void
+    public function getFullName() : string
     {
-        $this->id = $id;
+        return $this->getFirstName() . " " . $this->getLastName();
     }
 
     /**
@@ -122,5 +123,23 @@ class ContactModel
     public function setCreatedAtTimestamp(string $createdAtTimestamp): void
     {
         $this->createdAtTimestamp = $createdAtTimestamp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAtTimestamp(): string
+    {
+        return $this->updatedAtTimestamp;
+    }
+
+    /**
+     * @param string $updatedAtTimestamp
+     * @return ContactModel
+     */
+    public function setUpdatedAtTimestamp(string $updatedAtTimestamp): ContactModel
+    {
+        $this->updatedAtTimestamp = $updatedAtTimestamp;
+        return $this;
     }
 }

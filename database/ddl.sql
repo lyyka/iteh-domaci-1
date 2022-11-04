@@ -1,8 +1,8 @@
 create database if not exists lr20190024;
 
-use lr20190024;
+use lr20190024; /* Switch to db context */
 
-create table contacts
+create table if not exists contacts
 (
     id         bigint auto_increment
         primary key,
@@ -10,14 +10,15 @@ create table contacts
     last_name  varchar(50)                         not null,
     email      varchar(255)                        not null,
     phone      varchar(20)                         not null,
-    created_at timestamp default CURRENT_TIMESTAMP null,
+    created_at timestamp default CURRENT_TIMESTAMP not null,
+    updated_at timestamp default CURRENT_TIMESTAMP not null,
     constraint contacts_email_uindex
         unique (email),
     constraint contacts_id_uindex
         unique (id)
 );
 
-create table products
+create table if not exists products
 (
     id           bigint auto_increment
         primary key,
@@ -26,7 +27,7 @@ create table products
         unique (id)
 );
 
-create table sales_people
+create table if not exists sales_people
 (
     id    bigint auto_increment
         primary key,
@@ -38,9 +39,27 @@ create table sales_people
         unique (id)
 );
 
-insert into products(product_name) values('Paket Usluga 1');
-insert into products(product_name) values('Paket Usluga 2');
-insert into products(product_name) values('Paket Usluga 3');
-
-insert into sales_people(name, email) values ('Marko Markovic', 'marko@markovic.com');
-insert into sales_people(name, email) values ('Luka Lukic', 'luka@lukic.com');
+create table if not exists deals
+(
+    id                  bigint auto_increment
+        primary key,
+    contact_id          bigint                              not null,
+    product_id          bigint                              not null,
+    sales_person_id     bigint                              not null,
+    deal_value          double                              null,
+    deal_value_currency varchar(4)                          null,
+    notes               text                                null,
+    created_at          timestamp default CURRENT_TIMESTAMP not null,
+    updated_at          timestamp default CURRENT_TIMESTAMP not null,
+    constraint deals_id_uindex
+        unique (id),
+    constraint deals_contact_id_fk
+        foreign key (contact_id) references contacts (id)
+            on delete cascade,
+    constraint deals_product_id_fk
+        foreign key (product_id) references products (id)
+            on delete cascade,
+    constraint deals_sales_person_id_fk
+        foreign key (sales_person_id) references sales_people (id)
+            on delete cascade
+);

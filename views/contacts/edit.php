@@ -14,7 +14,13 @@ $model = $controller->getContactById();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Update contact</title>
+    <title>
+        <?php if($model) : ?>
+            <?= 'Home / ' . $model->getFullName() ?>
+        <?php else: ?>
+            <?= 'Home / Error' ?>
+        <?php endif; ?>
+    </title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
@@ -24,20 +30,23 @@ $model = $controller->getContactById();
     <nav aria-label="breadcrumb" class="mb-5">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Update contact</li>
+            <?php if($model) : ?>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <?= $model->getFullName() ?>
+                </li>
+            <?php endif; ?>
         </ol>
     </nav>
 
-    <h1 class="mb-4">Update contact</h1>
-
     <?php if($model) : ?>
-
-        <div class="alert alert-danger" style="display: none;" role="alert" id="contactCreateException"></div>
-        <div class="alert alert-success" style="display: none;" role="alert" id="contactCreateSuccess">
-            Success!
-        </div>
-
         <div class="mb-4">
+            <h2 class="mb-4">Update contact</h2>
+
+            <div class="alert alert-danger" style="display: none;" role="alert" id="contactCreateException"></div>
+            <div class="alert alert-success" style="display: none;" role="alert" id="contactCreateSuccess">
+                Success!
+            </div>
+
             <form>
                 <input type="hidden" id="id" value="<?= $model->getId() ?>" />
 
@@ -81,6 +90,14 @@ $model = $controller->getContactById();
             </form>
         </div>
 
+        <hr class="my-3" />
+
+        <div class="mb-4">
+
+            <h2 class="mb-4">Deals</h2>
+
+        </div>
+
     <?php else : ?>
         <div class="alert alert-danger" role="alert" id="contactCreateException">
             Cannot load contact information :(
@@ -91,6 +108,5 @@ $model = $controller->getContactById();
 <?php if($model) : ?>
     <script src="/views/contacts/js/create.js"></script>
 <?php endif; ?>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,22 +1,17 @@
 <?php
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Database/Database.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/BaseRepo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/ContactModel.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Model.php";
 
-class ContactModelRepo
+class ContactModelRepo extends BaseRepo
 {
-    private Database $database;
-
-    public function __construct()
-    {
-        $this->database = new Database();
-    }
-
     /**
      * @param array $row
      * @return ContactModel
      */
-    private function fillModelFromRow(array $row) : ContactModel
+    protected function fillModelFromRow(array $row) : ContactModel
     {
         $res = new ContactModel();
         $res->setId($row['id']);
@@ -25,6 +20,7 @@ class ContactModelRepo
         $res->setEmail($row['email']);
         $res->setPhone($row['phone']);
         $res->setCreatedAtTimestamp($row['created_at']);
+        $res->setUpdatedAtTimestamp($row['updated_at']);
         return $res;
     }
 
@@ -69,51 +65,19 @@ class ContactModelRepo
      */
     public function delete(ContactModel $contactModel) : void
     {
-        $id = $contactModel->getId();
-
-        if(!$id) throw new Exception("Cannot update contact without its ID!");
-
-        $this->database->connect();
-
-        $stmt = $this->database->prepare("delete from contacts where id = ?");
-
-        $stmt->bind_param('i', $id);
-
-        if($stmt->execute()) {
-            $contactModel->setId(null);
-        }
-
-        $stmt->close();
-        $this->database->disconnect();
+        $this->deleteById($contactModel);
     }
 
     /**
      * @param int $id
      * @return ContactModel|null
      */
-    public function getById(int $id) : ?ContactModel
+    public function getById(int $id) : ?Model
     {
-        $this->database->connect();
-
-        $stmt = $this->database->prepare("SELECT * FROM contacts where id = ?");
-
-        $stmt->bind_param("i", $id);
-
-        $res = null;
-
-        if($stmt->execute()) {
-            $result = $stmt->get_result();
-
-            while($row = $result->fetch_assoc()) {
-                $res = $this->fillModelFromRow($row);
-            }
-        }
-
-        $stmt->close();
-
-        $this->database->disconnect();
-
-        return $res;
+        return $this->fetchResultById(
+            'contacts',
+            $id
+        );
     }
 
     /**
@@ -121,24 +85,8 @@ class ContactModelRepo
      */
     public function getAll() : array
     {
-        $this->database->connect();
-
-        $stmt = $this->database->prepare("SELECT * FROM contacts order by created_at desc");
-
-        $res = [];
-
-        if($stmt->execute()) {
-            $result = $stmt->get_result();
-
-            while($row = $result->fetch_assoc()) {
-                $res[] = $this->fillModelFromRow($row);
-            }
-        }
-
-        $stmt->close();
-
-        $this->database->disconnect();
-
-        return $res;
+        return $this->fetchAndFillAllResults(
+            "SELECT * FROM contacts order by created_at desc"
+        );
     }
 }

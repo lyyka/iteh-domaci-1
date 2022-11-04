@@ -1,24 +1,17 @@
 <?php
 
-class Product
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Model.php";
+
+class Product extends Model
 {
-    private ?int $id = null;
     private string $name;
 
     /**
-     * @return int|null
+     * @return string
      */
-    public function getId(): ?int
+    public function getTableName(): string
     {
-        return $this->id;
-    }
-
-    /**
-     * @param int|null $id
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
+        return 'products';
     }
 
     /**
