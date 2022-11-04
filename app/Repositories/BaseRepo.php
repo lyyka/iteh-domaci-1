@@ -1,23 +1,33 @@
 <?php
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Model.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Database/Database.php";
 
 abstract class BaseRepo
 {
     protected Database $database;
 
-    abstract protected function fillModelFromRow(array $row) : ContactModel;
+    /**
+     * @param array $row
+     * @return Model
+     */
+    abstract protected function fillModelFromRow(array $row) : Model;
 
     public function __construct()
     {
         $this->database = new Database();
     }
 
-    protected function deleteById(Model $model) : void
+    /**
+     * @param Model $model
+     * @return void
+     * @throws Exception
+     */
+    public function delete(Model $model) : void
     {
         $id = $model->getId();
 
-        if(!$id) throw new Exception("Cannot update contact without its ID!");
+        if(!$id) throw new Exception("Cannot update model without its ID!");
 
         $this->database->connect();
 
@@ -33,6 +43,12 @@ abstract class BaseRepo
         $this->database->disconnect();
     }
 
+    /**
+     * @param string $table
+     * @param int $id
+     * @return Model|null
+     * @throws Exception
+     */
     protected function fetchResultById(string $table, int $id) : ?Model
     {
         $this->database->connect();
@@ -60,13 +76,20 @@ abstract class BaseRepo
 
     /**
      * @param string $query
+     * @param string|null $bindString
+     * @param array $bindValues
      * @return array
+     * @throws Exception
      */
-    protected function fetchAndFillAllResults(string $query) : array
+    protected function fetchAndFillAllResults(string $query, string $bindString = null, array $bindValues = []) : array
     {
         $this->database->connect();
 
         $stmt = $this->database->prepare($query);
+
+        if($bindString && count($bindValues) === strlen($bindString)) {
+            $stmt->bind_param($bindString, ...$bindValues);
+        }
 
         $res = [];
 

@@ -9,8 +9,6 @@ class ContactModel extends Model
     private string $lastName;
     private string $email;
     private string $phone;
-    private string $createdAtTimestamp;
-    private string $updatedAtTimestamp;
 
     /**
      * @throws Exception
@@ -107,39 +105,5 @@ class ContactModel extends Model
     public function setPhone(string $phone): void
     {
         $this->phone = $phone;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedAtTimestamp(): string
-    {
-        return $this->createdAtTimestamp;
-    }
-
-    /**
-     * @param string $createdAtTimestamp
-     */
-    public function setCreatedAtTimestamp(string $createdAtTimestamp): void
-    {
-        $this->createdAtTimestamp = $createdAtTimestamp;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUpdatedAtTimestamp(): string
-    {
-        return $this->updatedAtTimestamp;
-    }
-
-    /**
-     * @param string $updatedAtTimestamp
-     * @return ContactModel
-     */
-    public function setUpdatedAtTimestamp(string $updatedAtTimestamp): ContactModel
-    {
-        $this->updatedAtTimestamp = $updatedAtTimestamp;
-        return $this;
     }
 }

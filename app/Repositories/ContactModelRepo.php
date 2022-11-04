@@ -1,9 +1,8 @@
 <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Database/Database.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/BaseRepo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/ContactModel.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Model.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/BaseRepo.php";
 
 class ContactModelRepo extends BaseRepo
 {
@@ -11,7 +10,7 @@ class ContactModelRepo extends BaseRepo
      * @param array $row
      * @return ContactModel
      */
-    protected function fillModelFromRow(array $row) : ContactModel
+    protected function fillModelFromRow(array $row) : Model
     {
         $res = new ContactModel();
         $res->setId($row['id']);
@@ -56,16 +55,6 @@ class ContactModelRepo extends BaseRepo
 
         $stmt->close();
         $this->database->disconnect();
-    }
-
-    /**
-     * @param ContactModel $contactModel
-     * @return void
-     * @throws Exception
-     */
-    public function delete(ContactModel $contactModel) : void
-    {
-        $this->deleteById($contactModel);
     }
 
     /**

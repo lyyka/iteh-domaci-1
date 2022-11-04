@@ -40,7 +40,6 @@ $contacts = new ContactModelRepo();
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>First name</th>
                     <th>Last name</th>
                     <th>Email</th>
@@ -52,7 +51,6 @@ $contacts = new ContactModelRepo();
             <tbody>
                 <?php foreach($contacts->getAll() as $contact): ?>
                     <tr>
-                        <td><?= $contact->getId(); ?></td>
                         <td><?= $contact->getFirstName(); ?></td>
                         <td><?= $contact->getLastName(); ?></td>
                         <td><?= $contact->getEmail(); ?></td>

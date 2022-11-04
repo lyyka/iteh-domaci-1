@@ -5,6 +5,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Controllers/ContactEditController
 $controller = new ContactEditController();
 
 $model = $controller->getContactById();
+$deals = $model ? $controller->getDealsForContact($model) : [];
 
 ?>
 
@@ -96,6 +97,31 @@ $model = $controller->getContactById();
 
             <h2 class="mb-4">Deals</h2>
 
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Sales</th>
+                    <th>Value</th>
+                    <th>Notes</th>
+                    <th>Last update</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($deals as $deal): ?>
+                    <tr>
+                        <td><?= $deal->getProduct()->getName(); ?></td>
+                        <td><?= $deal->getSalesPerson()->getName(); ?></td>
+                        <td><?= $deal->getDealValueLabel(); ?></td>
+                        <td><?= $deal->getNotes(); ?></td>
+                        <td><?= $deal->getUpdatedAtTimestamp(); ?></td>
+                        <td>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
 
     <?php else : ?>

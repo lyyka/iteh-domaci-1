@@ -1,7 +1,9 @@
 <?php
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/ContactModelRepo.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/DealRepo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/ContactModel.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Deal.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/ValidatorProcessor.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/Required.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsNumeric.php";
@@ -16,6 +18,15 @@ class ContactEditController
                 new IsNumeric(),
             ]
         ]);
+    }
+
+    /**
+     * @param ContactModel $model
+     * @return array|Deal[]
+     */
+    public function getDealsForContact(ContactModel $model) : array
+    {
+        return (new DealRepo)->getForContact($model);
     }
 
     public function getContactById() : ?ContactModel

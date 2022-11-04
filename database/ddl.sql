@@ -23,6 +23,8 @@ create table if not exists products
     id           bigint auto_increment
         primary key,
     product_name varchar(255) not null,
+    created_at timestamp default CURRENT_TIMESTAMP not null,
+    updated_at timestamp default CURRENT_TIMESTAMP not null,
     constraint products_id_uindex
         unique (id)
 );
@@ -33,6 +35,8 @@ create table if not exists sales_people
         primary key,
     name  varchar(255) not null,
     email varchar(255) not null,
+    created_at timestamp default CURRENT_TIMESTAMP not null,
+    updated_at timestamp default CURRENT_TIMESTAMP not null,
     constraint sales_people_email_uindex
         unique (email),
     constraint sales_people_id_uindex

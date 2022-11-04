@@ -9,13 +9,16 @@ class Database
 
     private mysqli $client;
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function connect() : void
     {
         $this->client = new mysqli($this->server, $this->user, $this->password, $this->database);
 
         if ($this->client->connect_errno) {
-            printf("Konekcija neuspešna: %s\n", $this->client->connect_error);
-            exit();
+            throw new Exception("Unable to connect to database!");
         }
 
         $this->client->set_charset("utf8");
