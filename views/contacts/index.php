@@ -1,6 +1,6 @@
 <?php
 
-require 'app/Repositories/ContactModelRepo.php';
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/ContactModelRepo.php";
 
 $contacts = new ContactModelRepo();
 
@@ -59,6 +59,12 @@ $contacts = new ContactModelRepo();
                         <td><?= $contact->getPhone(); ?></td>
                         <td><?= $contact->getCreatedAtTimestamp(); ?></td>
                         <td>
+                            <a href="/views/contacts/edit.php?id=<?= $contact->getId(); ?>"
+                                class="btn btn-info"
+                            >
+                                Edit
+                            </a>
+
                             <button
                                 onclick="deleteContact(this, <?= $contact->getId(); ?>)"
                                 class="btn btn-danger"

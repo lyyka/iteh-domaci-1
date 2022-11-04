@@ -13,6 +13,22 @@ class ContactModelRepo
     }
 
     /**
+     * @param array $row
+     * @return ContactModel
+     */
+    private function fillModelFromRow(array $row) : ContactModel
+    {
+        $res = new ContactModel();
+        $res->setId($row['id']);
+        $res->setFirstName($row['first_name']);
+        $res->setLastName($row['last_name']);
+        $res->setEmail($row['email']);
+        $res->setPhone($row['phone']);
+        $res->setCreatedAtTimestamp($row['created_at']);
+        return $res;
+    }
+
+    /**
      * @param ContactModel $contactModel
      * @return void
      * @throws Exception
@@ -28,10 +44,9 @@ class ContactModelRepo
 
         if($id = $contactModel->getId()) {
             $stmt = $this->database->prepare("update contacts set first_name = ?, last_name = ?, email = ?, phone = ? where id = ?");
-            $stmt->bind_param("issss", $id, $firstName, $lastName, $email, $phone);
+            $stmt->bind_param("ssssi", $firstName, $lastName, $email, $phone, $id);
             if(!$stmt->execute()) {
                 throw new Exception("Failed updating existing contact!");
-
             }
         } else {
             $stmt = $this->database->prepare("insert into contacts(first_name, last_name, email, phone) values(?, ?, ?, ?)");
@@ -73,6 +88,35 @@ class ContactModelRepo
     }
 
     /**
+     * @param int $id
+     * @return ContactModel|null
+     */
+    public function getById(int $id) : ?ContactModel
+    {
+        $this->database->connect();
+
+        $stmt = $this->database->prepare("SELECT * FROM contacts where id = ?");
+
+        $stmt->bind_param("i", $id);
+
+        $res = null;
+
+        if($stmt->execute()) {
+            $result = $stmt->get_result();
+
+            while($row = $result->fetch_assoc()) {
+                $res = $this->fillModelFromRow($row);
+            }
+        }
+
+        $stmt->close();
+
+        $this->database->disconnect();
+
+        return $res;
+    }
+
+    /**
      * @return array|ContactModel[]
      */
     public function getAll() : array
@@ -87,15 +131,7 @@ class ContactModelRepo
             $result = $stmt->get_result();
 
             while($row = $result->fetch_assoc()) {
-                $model = new ContactModel();
-                $model->setId($row['id']);
-                $model->setFirstName($row['first_name']);
-                $model->setLastName($row['last_name']);
-                $model->setEmail($row['email']);
-                $model->setPhone($row['phone']);
-                $model->setCreatedAtTimestamp($row['created_at']);
-
-                $res[] = $model;
+                $res[] = $this->fillModelFromRow($row);
             }
         }
 

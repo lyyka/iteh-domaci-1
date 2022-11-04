@@ -43,15 +43,20 @@ class ValidatorProcessor
     private function getValueForFieldName(string $fieldName) : mixed
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            return $_POST[$fieldName];
+            return $_POST[$fieldName] ?? null;
         } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return $_GET[$fieldName];
+            return $_GET[$fieldName] ?? null;
         }
 
         return null;
     }
 
     /**
+     * Validate all passed fields.
+     * $data should contain field names as keys and an array of Validator as value
+     *
+     * Only completely valid fields get injected into $data to be gathered through input()
+     *
      * @param array $data
      * @return $this
      */
@@ -66,12 +71,18 @@ class ValidatorProcessor
         foreach ($data as $fieldName => $validators) {
             $value = $this->getValueForFieldName($fieldName);
 
+            $allValid = true;
+
             foreach ($validators as $validator) {
-                if($validator->isValid($value)) {
-                    $this->data[$fieldName] = $value;
-                } else {
+                if(!$validator->isValid($value)) {
+                    $allValid = false;
                     $this->errors[$fieldName] = $validator->getFailureMessage($fieldName);
+                    break;
                 }
+            }
+
+            if($allValid) {
+                $this->data[$fieldName] = $value;
             }
         }
 

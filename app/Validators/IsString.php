@@ -6,7 +6,7 @@ class IsString implements Validator
 {
     public function isValid(mixed $value): bool
     {
-        return is_string($value);
+        return empty($value) || is_string($value);
     }
 
     public function getFailureMessage(string $fieldName): string

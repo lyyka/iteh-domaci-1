@@ -6,7 +6,7 @@ class IsNumeric implements Validator
 {
     public function isValid(mixed $value): bool
     {
-        return is_numeric($value);
+        return empty($value) || is_numeric($value);
     }
 
     public function getFailureMessage(string $fieldName): string

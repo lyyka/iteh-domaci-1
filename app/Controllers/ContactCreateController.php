@@ -4,12 +4,16 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/ContactModel.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/ValidatorProcessor.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/Required.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsString.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsNumeric.php";
 
 class ContactCreateController
 {
     private function validate(): ValidatorProcessor
     {
         return (new ValidatorProcessor)->process([
+            'id' => [
+                new IsNumeric(),
+            ],
             'first_name' => [
                 new Required(),
                 new IsString(),
@@ -41,6 +45,11 @@ class ContactCreateController
         }
 
         $contactModel = new ContactModel();
+
+        if($id = $data->input('id')) {
+            $contactModel->setId($id);
+        }
+
         $contactModel->setFirstName($data->input('first_name'));
         $contactModel->setLastName($data->input('last_name'));
         $contactModel->setEmail($data->input('email'));
