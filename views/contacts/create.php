@@ -11,11 +11,12 @@
 
 <body>
 <main class="container my-5">
-    <p class="mb-5">
-        <a href="/">
-            Home
-        </a> / Create new contact
-    </p>
+    <nav aria-label="breadcrumb" class="mb-5">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create new contact</li>
+        </ol>
+    </nav>
 
     <h1 class="mb-4">Create new contact</h1>
 
@@ -51,6 +52,17 @@
                         class="btn btn-dark mb-4">Create new contact</button>
             </div>
         </form>
+    </div>
+
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container top-0 end-0 p-3">
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="contactCreateException">
+                <div class="d-flex">
+                    <div class="toast-body"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 

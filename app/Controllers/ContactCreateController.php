@@ -31,7 +31,6 @@ class ContactCreateController
 
     /**
      * @return array
-     * @throws Exception
      */
     public function handle(): array
     {
@@ -41,14 +40,17 @@ class ContactCreateController
             return ['success' => false, 'errors' => $data->getErrors()];
         }
 
-        $contactModel = new ContactModel(
-            $data->input('first_name'),
-            $data->input('last_name'),
-            $data->input('email'),
-            $data->input('phone'),
-        );
+        $contactModel = new ContactModel();
+        $contactModel->setFirstName($data->input('first_name'));
+        $contactModel->setLastName($data->input('last_name'));
+        $contactModel->setEmail($data->input('email'));
+        $contactModel->setPhone($data->input('phone'));
 
-        $contactModel->save();
+        try {
+            $contactModel->save();
+        } catch (Exception $ex) {
+            return ['success' => false, 'message' => $ex->getMessage()];
+        }
 
         return ['success' => true];
     }

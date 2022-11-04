@@ -79,7 +79,7 @@ class ContactModelRepo
     {
         $this->database->connect();
 
-        $stmt = $this->database->prepare("SELECT * FROM contacts");
+        $stmt = $this->database->prepare("SELECT * FROM contacts order by created_at desc");
 
         $res = [];
 
@@ -87,14 +87,12 @@ class ContactModelRepo
             $result = $stmt->get_result();
 
             while($row = $result->fetch_assoc()) {
-                $model = new ContactModel(
-                    $row['first_name'],
-                    $row['last_name'],
-                    $row['email'],
-                    $row['phone'],
-                );
-
+                $model = new ContactModel();
                 $model->setId($row['id']);
+                $model->setFirstName($row['first_name']);
+                $model->setLastName($row['last_name']);
+                $model->setEmail($row['email']);
+                $model->setPhone($row['phone']);
                 $model->setCreatedAtTimestamp($row['created_at']);
 
                 $res[] = $model;

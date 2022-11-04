@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', function () {
     const button = document.querySelector("#createContact");
     const form = button.closest('form');
+    const toastEl = document.querySelector("#contactCreateException");
 
     button.addEventListener('click', () => {
         const req = new XMLHttpRequest();
@@ -22,7 +23,7 @@ window.addEventListener('DOMContentLoaded', function () {
                         button.classList.add('btn-dark');
                         button.innerHTML = 'Create new contact';
                     }, 1500);
-                } else if (resp.errors != null) {
+                } else if (resp.errors) {
                     const keys = Object.keys(resp.errors);
 
                     if(keys.length > 0) {
@@ -35,6 +36,12 @@ window.addEventListener('DOMContentLoaded', function () {
                                 .textContent = resp.errors[k];
                         });
                     }
+                } else if (resp.message) {
+                    toastEl
+                        .querySelector('.toast-body')
+                        .textContent = resp.message;
+
+                    (new bootstrap.Toast(toastEl)).show();
                 }
             }
         }
