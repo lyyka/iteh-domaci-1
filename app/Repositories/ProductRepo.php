@@ -14,7 +14,7 @@ class ProductRepo extends BaseRepo
     {
         $res = new Product();
         $res->setId($row['id']);
-        $res->setName($row['product_name']);
+        $res->setProductName($row['product_name']);
         $res->setCreatedAtTimestamp($row['created_at']);
         $res->setUpdatedAtTimestamp($row['updated_at']);
         return $res;
@@ -30,6 +30,17 @@ class ProductRepo extends BaseRepo
         return $this->fetchResultById(
             'products',
             $id
+        );
+    }
+
+    /**
+     * @return array|Product[]
+     * @throws Exception
+     */
+    public function getAll() : array
+    {
+        return $this->fetchAndFillAllResults(
+            "SELECT * FROM products order by product_name asc"
         );
     }
 }

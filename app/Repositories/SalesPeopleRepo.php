@@ -24,12 +24,24 @@ class SalesPeopleRepo extends BaseRepo
     /**
      * @param int $id
      * @return SalesPerson|null
+     * @throws Exception
      */
     public function getById(int $id) : ?Model
     {
         return $this->fetchResultById(
             'sales_people',
             $id
+        );
+    }
+
+    /**
+     * @return array|Product[]
+     * @throws Exception
+     */
+    public function getAll() : array
+    {
+        return $this->fetchAndFillAllResults(
+            "SELECT * FROM sales_people order by name asc"
         );
     }
 }

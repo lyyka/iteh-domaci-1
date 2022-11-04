@@ -1,66 +1,66 @@
-window.addEventListener('DOMContentLoaded', function () {
-    const button = document.querySelector("#createContact");
-    const form = button.closest('form');
+const create = (form, route, query, id, successAlertId, exceptionAlertId) => {
+    const req = new XMLHttpRequest();
 
-    button.addEventListener('click', () => {
-        const req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const resp = JSON.parse(this.response);
 
-        const idField = document.querySelector('#id');
-        const id = idField ? idField.value : '';
+            form.querySelectorAll('.form-control').forEach(field => {
+                field.classList.remove('is-invalid');
 
-        const firstName = document.querySelector('#first_name').value;
-        const lastName = document.querySelector('#last_name').value;
-        const email = document.querySelector('#email').value;
-        const phone = document.querySelector('#phone').value;
+                const invalidLbl = field
+                    .parentElement
+                    .querySelector('.invalid-feedback');
 
-        req.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                form.classList.remove('was-validated');
-                const resp = JSON.parse(this.response);
-
-                if(resp.success) {
-                    if(!id) form.reset();
-
-                    const toastEl = document.querySelector("#contactCreateSuccess");
-                    toastEl.style.display = 'flex';
-
-                    window.setTimeout(function() {
-                        toastEl.style.display = 'none';
-                    }, 5000);
-
-                } else if (resp.errors) {
-                    const keys = Object.keys(resp.errors);
-
-                    if(keys.length > 0) {
-                        form.classList.add('was-validated');
-
-                        keys.forEach(k => {
-                            document.querySelector(`#${k}`)
-                                .parentElement
-                                .querySelector('.invalid-feedback')
-                                .textContent = resp.errors[k];
-                        });
-                    }
-                } else if (resp.message) {
-
-                    const toastEl = document.querySelector("#contactCreateException");
-                    toastEl.textContent = resp.message;
-                    toastEl.style.display = 'flex';
-
-                    window.setTimeout(function() {
-                        toastEl.style.display = 'none';
-                    }, 5000);
-
+                if(invalidLbl) {
+                    invalidLbl.textContent = "";
                 }
+            });
+
+            if(resp.success) {
+                if(!id) form.reset();
+
+                const toastEl = document.querySelector(successAlertId);
+                toastEl.style.display = 'flex';
+
+                window.setTimeout(function() {
+                    toastEl.style.display = 'none';
+                }, 5000);
+
+            } else if (resp.errors) {
+                const keys = Object.keys(resp.errors);
+
+                if(keys.length > 0) {
+                    keys.forEach(k => {
+                        const formField = document.querySelector(`#${k}`);
+
+                        formField.classList.add('is-invalid');
+
+                        formField
+                            .parentElement
+                            .querySelector('.invalid-feedback')
+                            .textContent = resp.errors[k];
+                    });
+                }
+            } else if (resp.message) {
+
+                const toastEl = document.querySelector(exceptionAlertId);
+                toastEl.textContent = resp.message;
+                toastEl.style.display = 'flex';
+
+                window.setTimeout(function() {
+                    toastEl.style.display = 'none';
+                }, 5000);
+
             }
         }
+    }
 
-        req.open(
-            "POST",
-            "/app/Controllers/Contacts/ContactCreateController.php",
-            true
-        );
-        req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        req.send(`id=${id}&first_name=${firstName}&last_name=${lastName}&email=${email}&phone=${phone}`);
-    });
-});
+    req.open(
+        "POST",
+        route,
+        true
+    );
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.send(query);
+};

@@ -4,7 +4,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Model.php";
 
 class Product extends Model
 {
-    private string $name;
+    private string $productName;
 
     /**
      * @return string
@@ -17,16 +17,16 @@ class Product extends Model
     /**
      * @return string
      */
-    public function getName(): string
+    public function getProductName(): string
     {
-        return $this->name;
+        return $this->productName;
     }
 
     /**
      * @param string $name
      */
-    public function setName(string $name): void
+    public function setProductName(string $name): void
     {
-        $this->name = $name;
+        $this->productName = $name;
     }
 }

@@ -60,6 +60,7 @@ class ContactModelRepo extends BaseRepo
     /**
      * @param int $id
      * @return ContactModel|null
+     * @throws Exception
      */
     public function getById(int $id) : ?Model
     {
@@ -71,6 +72,7 @@ class ContactModelRepo extends BaseRepo
 
     /**
      * @return array|ContactModel[]
+     * @throws Exception
      */
     public function getAll() : array
     {

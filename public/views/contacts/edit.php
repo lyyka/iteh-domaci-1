@@ -45,7 +45,7 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
 
             <div class="alert alert-danger" style="display: none;" role="alert" id="contactCreateException"></div>
             <div class="alert alert-success" style="display: none;" role="alert" id="contactCreateSuccess">
-                Success!
+                ✨ Success!
             </div>
 
             <form>
@@ -53,14 +53,14 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
 
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label for="first_name" class="form-label">First name:</label>
+                        <label for="first_name" class="form-label"><span class="text-danger">*</span> First name:</label>
                         <input type="text" class="form-control" placeholder="Jane"
                                value="<?= $model->getFirstName() ?>"
                                id="first_name" required>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-md-6">
-                        <label for="last_name" class="form-label">Last name:</label>
+                        <label for="last_name" class="form-label"><span class="text-danger">*</span> Last name:</label>
                         <input type="text" class="form-control" placeholder="Doe"
                                value="<?= $model->getLastName() ?>"
                                id="last_name" required>
@@ -68,14 +68,14 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
                     </div>
 
                     <div class="col-md-6">
-                        <label for="email" class="form-label">Email:</label>
+                        <label for="email" class="form-label"><span class="text-danger">*</span> Email:</label>
                         <input type="email" class="form-control" placeholder="example@example.com"
                                value="<?= $model->getEmail() ?>"
                                id="email" required>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-md-6">
-                        <label for="phone" class="form-label">Phone:</label>
+                        <label for="phone" class="form-label"><span class="text-danger">*</span> Phone:</label>
                         <input type="text" placeholder="123 123 123" class="form-control"
                                value="<?= $model->getPhone() ?>"
                                id="phone" required>
@@ -95,11 +95,16 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
 
         <div class="mb-4">
 
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <a href="/public/views/deals/create.php?contact_id=<?= $model->getId() ?>"
+                        class="btn btn-dark mb-4">+ New deal</a>
+            </div>
+
             <h2 class="mb-4">Deals</h2>
 
             <div class="alert alert-danger" style="display: none;" role="alert" id="dealDeleteException"></div>
             <div class="alert alert-success" style="display: none;" role="alert" id="dealDeleteSuccess">
-                Success!
+                ✨ Success!
             </div>
 
             <table class="table table-striped">
@@ -110,18 +115,24 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
                     <th>Value</th>
                     <th>Notes</th>
                     <th>Last update</th>
-                    <th></th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach($deals as $deal): ?>
                     <tr>
-                        <td><?= $deal->getProduct()->getName(); ?></td>
+                        <td><?= $deal->getProduct()->getProductName(); ?></td>
                         <td><?= $deal->getSalesPerson()->getName(); ?></td>
                         <td><?= $deal->getDealValueLabel(); ?></td>
                         <td><?= $deal->getNotes(); ?></td>
                         <td><?= $deal->getUpdatedAtTimestamp(); ?></td>
                         <td>
+                            <a href="/public/views/deals/edit.php?id=<?= $deal->getId(); ?>"
+                               class="btn btn-primary"
+                            >
+                                Edit
+                            </a>
+
                             <button
                                     onclick="deleteRow(this, <?= $deal->getId(); ?>,
                                             '/app/Controllers/Deals/DealDeleteController.php',
@@ -138,14 +149,15 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
         </div>
 
     <?php else : ?>
-        <div class="alert alert-danger" role="alert" id="contactCreateException">
-            Cannot load contact information :(
+        <div class="alert alert-danger" role="alert">
+            Cannot load contact information.
         </div>
     <?php endif; ?>
 </main>
 
 <?php if($model) : ?>
     <script src="/public/js/create.js"></script>
+    <script src="/public/js/contacts/create.js"></script>
     <script src="/public/js/delete.js"></script>
 <?php endif; ?>
 </body>

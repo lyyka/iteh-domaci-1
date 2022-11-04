@@ -4,6 +4,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Deal.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsNumeric.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/Required.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/ValidatorProcessor.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsGreaterThen.php";
 
 class DealDeleteController
 {
@@ -13,6 +14,7 @@ class DealDeleteController
             'id' => [
                 new Required(),
                 new IsNumeric(),
+                new IsGreaterThen(1)
             ],
         ]);
     }

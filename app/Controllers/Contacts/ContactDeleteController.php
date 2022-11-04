@@ -4,15 +4,20 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/ContactModel.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsNumeric.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/Required.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/ValidatorProcessor.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsGreaterThen.php";
 
 class ContactDeleteController
 {
+    /**
+     * @return ValidatorProcessor
+     */
     private function validate(): ValidatorProcessor
     {
         return (new ValidatorProcessor)->process([
             'id' => [
                 new Required(),
                 new IsNumeric(),
+                new IsGreaterThen(0)
             ],
         ]);
     }

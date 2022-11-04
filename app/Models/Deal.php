@@ -2,10 +2,12 @@
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Model.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Product.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/ContactModel.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/SalesPerson.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/DealRepo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/SalesPeopleRepo.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/ProductRepo.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/ContactModelRepo.php";
 
 class Deal extends Model
 {
@@ -39,6 +41,15 @@ class Deal extends Model
     public function getTableName(): string
     {
         return 'deals';
+    }
+
+    public function getContact() : ?ContactModel
+    {
+        if($id = $this->getContactId()) {
+            return (new ContactModelRepo())->getById($id);
+        }
+
+        return null;
     }
 
     public function getProduct() : ?Product

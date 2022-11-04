@@ -28,14 +28,14 @@ $contacts = new ContactModelRepo();
     <h1 class="mb-4">List of contacts</h1>
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a href="/public/views/contacts/create.php" class="btn btn-dark mb-4">Create new contact</a>
+        <a href="/public/views/contacts/create.php" class="btn btn-dark mb-4">+ New contact</a>
     </div>
 
     <div class="mb-4">
         <h2 class="mb-3">View all contacts</h2>
         <div class="alert alert-danger" style="display: none;" role="alert" id="contactDeleteException"></div>
         <div class="alert alert-success" style="display: none;" role="alert" id="contactDeleteSuccess">
-            Success!
+            ✨ Success!
         </div>
         <table class="table table-striped">
             <thead>
@@ -45,7 +45,7 @@ $contacts = new ContactModelRepo();
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Last update</th>
-                    <th></th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

@@ -1,13 +1,14 @@
 <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/ContactModel.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Models/Deal.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/ValidatorProcessor.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/Required.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsString.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsNumeric.php";
-
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsGreaterThen.php";
-class ContactCreateController
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Validators/IsLessThen.php";
+
+class DealCreateController
 {
     /**
      * @return ValidatorProcessor
@@ -17,22 +18,29 @@ class ContactCreateController
         return (new ValidatorProcessor)->process([
             'id' => [
                 new IsNumeric(),
-                new IsGreaterThen(1)
+                new IsGreaterThen(1),
             ],
-            'first_name' => [
+            'contact_id' => [
                 new Required(),
+                new IsNumeric(),
+            ],
+            'product_id' => [
+                new Required(),
+                new IsNumeric(),
+            ],
+            'sales_person_id' => [
+                new Required(),
+                new IsNumeric(),
+            ],
+            'deal_value_currency' => [
                 new IsString(),
+                new IsLessThen(4),
             ],
-            'last_name' => [
-                new Required(),
-                new IsString(),
+            'deal_value' => [
+                new IsNumeric(),
+                new IsGreaterThen(0),
             ],
-            'email' => [
-                new Required(),
-                new IsString(),
-            ],
-            'phone' => [
-                new Required(),
+            'notes' => [
                 new IsString(),
             ],
         ]);
@@ -49,19 +57,24 @@ class ContactCreateController
             return ['success' => false, 'errors' => $data->getErrors()];
         }
 
-        $contactModel = new ContactModel();
+        $deal = new Deal();
 
         if($id = $data->input('id')) {
-            $contactModel->setId($id);
+            $deal->setId($id);
         }
 
-        $contactModel->setFirstName($data->input('first_name'));
-        $contactModel->setLastName($data->input('last_name'));
-        $contactModel->setEmail($data->input('email'));
-        $contactModel->setPhone($data->input('phone'));
+        $dealValueCurrency = $data->input('deal_value_currency');
+        $dealValue = $data->input('deal_value');
+
+        $deal->setContactId($data->input('contact_id'));
+        $deal->setProductId($data->input('product_id'));
+        $deal->setSalesPersonId($data->input('sales_person_id'));
+        $deal->setDealValueCurrency($dealValueCurrency ?? null);
+        $deal->setDealValue($dealValue ? (float) $dealValue : null);
+        $deal->setNotes($data->input('notes'));
 
         try {
-            $contactModel->save();
+            $deal->save();
         } catch (Exception $ex) {
             return ['success' => false, 'message' => $ex->getMessage()];
         }
@@ -70,4 +83,4 @@ class ContactCreateController
     }
 }
 
-echo json_encode((new ContactCreateController)->handle());
+echo json_encode((new DealCreateController)->handle());

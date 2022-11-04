@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Create new contact</title>
+    <title>Home / Create new contact</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
@@ -22,30 +22,30 @@
 
     <div class="alert alert-danger" style="display: none;" role="alert" id="contactCreateException"></div>
     <div class="alert alert-success" style="display: none;" role="alert" id="contactCreateSuccess">
-        Success!
+        ✨ Success!
     </div>
 
     <div class="mb-4">
         <form>
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="first_name" class="form-label">First name:</label>
+                    <label for="first_name" class="form-label"><span class="text-danger">*</span> First name:</label>
                     <input type="text" class="form-control" placeholder="Jane" id="first_name" required>
                     <div class="invalid-feedback"></div>
                 </div>
                 <div class="col-md-6">
-                    <label for="last_name" class="form-label">Last name:</label>
+                    <label for="last_name" class="form-label"><span class="text-danger">*</span> Last name:</label>
                     <input type="text" class="form-control" placeholder="Doe" id="last_name" required>
                     <div class="invalid-feedback"></div>
                 </div>
 
                 <div class="col-md-6">
-                    <label for="email" class="form-label">Email:</label>
+                    <label for="email" class="form-label"><span class="text-danger">*</span> Email:</label>
                     <input type="email" class="form-control" placeholder="example@example.com" id="email" required>
                     <div class="invalid-feedback"></div>
                 </div>
                 <div class="col-md-6">
-                    <label for="phone" class="form-label">Phone:</label>
+                    <label for="phone" class="form-label"><span class="text-danger">*</span> Phone:</label>
                     <input type="text" placeholder="123 123 123" class="form-control" id="phone" required>
                     <div class="invalid-feedback"></div>
                 </div>
@@ -61,5 +61,6 @@
 </main>
 
 <script src="/public/js/create.js"></script>
+<script src="/public/js/contacts/create.js"></script>
 </body>
 </html>

@@ -44,18 +44,18 @@ class DealRepo extends BaseRepo
         if($id = $deal->getId()) {
             $stmt = $this->database->prepare("update deals set contact_id = ?, product_id = ?, sales_person_id = ?, 
                  deal_value = ?, deal_value_currency = ?, notes = ? where id = ?");
-            $stmt->bind_param("iiidisi", $contactId, $productId, $salesPersonId, $dealValue, $dealValueCurrency, $notes, $id);
+            $stmt->bind_param("iiidssi", $contactId, $productId, $salesPersonId, $dealValue, $dealValueCurrency, $notes, $id);
             if(!$stmt->execute()) {
-                throw new Exception("Failed updating existing contact!");
+                throw new Exception("Failed updating existing deal!");
             }
         } else {
             $stmt = $this->database->prepare("insert into deals(contact_id, product_id, sales_person_id, 
                   deal_value, deal_value_currency, notes) values(?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("iiidisi", $contactId, $productId, $salesPersonId, $dealValue, $dealValueCurrency, $notes);
+            $stmt->bind_param("iiidss", $contactId, $productId, $salesPersonId, $dealValue, $dealValueCurrency, $notes);
             if($stmt->execute()) {
                 $deal->setId($stmt->insert_id);
             } else {
-                throw new Exception("Failed creating new contact!");
+                throw new Exception("Failed creating new deal! $stmt->error");
             }
         }
 
@@ -64,7 +64,21 @@ class DealRepo extends BaseRepo
     }
 
     /**
+     * @param int $id
+     * @return Deal|null
+     * @throws Exception
+     */
+    public function getById(int $id) : ?Model
+    {
+        return $this->fetchResultById(
+            'deals',
+            $id
+        );
+    }
+
+    /**
      * @return array|Deal[]
+     * @throws Exception
      */
     public function getForContact(ContactModel $contactModel) : array
     {
