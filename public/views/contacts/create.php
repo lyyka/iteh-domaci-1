@@ -60,6 +60,6 @@
     </div>
 </main>
 
-<script src="/views/contacts/js/create.js"></script>
+<script src="/public/js/create.js"></script>
 </body>
 </html>

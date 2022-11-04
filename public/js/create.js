@@ -57,7 +57,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
         req.open(
             "POST",
-            "/app/Controllers/ContactCreateController.php",
+            "/app/Controllers/Contacts/ContactCreateController.php",
             true
         );
         req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');

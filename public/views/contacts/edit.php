@@ -1,6 +1,6 @@
 <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Controllers/ContactEditController.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Controllers/Contacts/ContactEditController.php";
 
 $controller = new ContactEditController();
 
@@ -97,6 +97,11 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
 
             <h2 class="mb-4">Deals</h2>
 
+            <div class="alert alert-danger" style="display: none;" role="alert" id="dealDeleteException"></div>
+            <div class="alert alert-success" style="display: none;" role="alert" id="dealDeleteSuccess">
+                Success!
+            </div>
+
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -117,6 +122,14 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
                         <td><?= $deal->getNotes(); ?></td>
                         <td><?= $deal->getUpdatedAtTimestamp(); ?></td>
                         <td>
+                            <button
+                                    onclick="deleteRow(this, <?= $deal->getId(); ?>,
+                                            '/app/Controllers/Deals/DealDeleteController.php',
+                                            '#dealDeleteException', '#dealDeleteSuccess')"
+                                    class="btn btn-danger"
+                            >
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -132,7 +145,8 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
 </main>
 
 <?php if($model) : ?>
-    <script src="/views/contacts/js/create.js"></script>
+    <script src="/public/js/create.js"></script>
+    <script src="/public/js/delete.js"></script>
 <?php endif; ?>
 </body>
 </html>

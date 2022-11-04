@@ -28,7 +28,7 @@ $contacts = new ContactModelRepo();
     <h1 class="mb-4">List of contacts</h1>
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a href="/views/contacts/create.php" class="btn btn-dark mb-4">Create new contact</a>
+        <a href="/public/views/contacts/create.php" class="btn btn-dark mb-4">Create new contact</a>
     </div>
 
     <div class="mb-4">
@@ -57,14 +57,16 @@ $contacts = new ContactModelRepo();
                         <td><?= $contact->getPhone(); ?></td>
                         <td><?= $contact->getUpdatedAtTimestamp(); ?></td>
                         <td>
-                            <a href="/views/contacts/edit.php?id=<?= $contact->getId(); ?>"
+                            <a href="/public/views/contacts/edit.php?id=<?= $contact->getId(); ?>"
                                 class="btn btn-primary"
                             >
                                 View
                             </a>
 
                             <button
-                                onclick="deleteContact(this, <?= $contact->getId(); ?>)"
+                                onclick="deleteRow(this, <?= $contact->getId(); ?>,
+                                        '/app/Controllers/Contacts/ContactDeleteController.php',
+                                        '#contactDeleteException', '#contactDeleteSuccess')"
                                 class="btn btn-danger"
                             >
                                 Delete
@@ -77,6 +79,6 @@ $contacts = new ContactModelRepo();
     </div>
 </main>
 
-<script src="/views/contacts/js/delete.js"></script>
+<script src="/public/js/delete.js"></script>
 </body>
 </html>
