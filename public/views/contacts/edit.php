@@ -19,7 +19,7 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
         <?php if($model) : ?>
             <?= 'Home / ' . $model->getFullName() ?>
         <?php else: ?>
-            <?= 'Home / Error' ?>
+            Home / Error
         <?php endif; ?>
     </title>
 
@@ -110,8 +110,9 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th>Product</th>
-                    <th>Sales</th>
+                    <th>Sales Person</th>
                     <th>Value</th>
                     <th>Notes</th>
                     <th>Last update</th>
@@ -121,6 +122,7 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
                 <tbody>
                 <?php foreach($deals as $deal): ?>
                     <tr>
+                        <td><?= $deal->getId(); ?></td>
                         <td><?= $deal->getProduct()->getProductName(); ?></td>
                         <td><?= $deal->getSalesPerson()->getName(); ?></td>
                         <td><?= $deal->getDealValueLabel(); ?></td>
@@ -147,7 +149,6 @@ $deals = $model ? $controller->getDealsForContact($model) : [];
                 </tbody>
             </table>
         </div>
-
     <?php else : ?>
         <div class="alert alert-danger" role="alert">
             Cannot load contact information.

@@ -113,7 +113,9 @@ try {
     <?php endif; ?>
 </main>
 
-<script src="/public/js/create.js"></script>
-<script src="/public/js/deals/create.js"></script>
+<?php if($contact): ?>
+    <script src="/public/js/create.js"></script>
+    <script src="/public/js/deals/create.js"></script>
+<?php endif; ?>
 </body>
 </html>
