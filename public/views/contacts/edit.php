@@ -4,8 +4,12 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Controllers/Contacts/ContactEditC
 
 $controller = new ContactEditController();
 
-$model = $controller->getContactById();
-$deals = $model ? $controller->getDealsForContact($model) : [];
+$model = null;
+
+try {
+    $model = $controller->getContactById();
+    $deals = $model ? $controller->getDealsForContact($model) : [];
+} catch (Exception $e) { }
 
 ?>
 

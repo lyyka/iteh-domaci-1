@@ -36,7 +36,7 @@ class DealDeleteController
         try {
             $deal->delete();
         } catch (Exception $ex) {
-            return ['success' => false, 'message' => $ex->getMessage()];
+            return ['success' => false, 'message' => 'Failed while deleting!'];
         }
 
         return ['success' => true];

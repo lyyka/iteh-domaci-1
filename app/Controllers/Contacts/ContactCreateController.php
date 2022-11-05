@@ -63,7 +63,7 @@ class ContactCreateController
         try {
             $contactModel->save();
         } catch (Exception $ex) {
-            return ['success' => false, 'message' => $ex->getMessage()];
+            return ['success' => false, 'message' => 'Failed while saving!'];
         }
 
         return ['success' => true];

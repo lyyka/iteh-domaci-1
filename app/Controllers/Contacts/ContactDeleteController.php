@@ -39,7 +39,7 @@ class ContactDeleteController
         try {
             $contactModel->delete();
         } catch (Exception $ex) {
-            return ['success' => false, 'message' => $ex->getMessage()];
+            return ['success' => false, 'message' => 'Failed while deleting!'];
         }
 
         return ['success' => true];

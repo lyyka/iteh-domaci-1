@@ -76,7 +76,7 @@ class DealCreateController
         try {
             $deal->save();
         } catch (Exception $ex) {
-            return ['success' => false, 'message' => $ex->getMessage()];
+            return ['success' => false, 'message' => 'Failed while saving!'];
         }
 
         return ['success' => true];
