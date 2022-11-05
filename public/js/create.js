@@ -1,4 +1,13 @@
-const create = (form, route, query, id, successAlertId, exceptionAlertId) => {
+const jsonToRequestBody = (json) => {
+    const keys = Object.keys(json);
+    let res = "";
+    keys.forEach(k => {
+        res += `${k}=${json[k]}&`;
+    });
+    return res;
+};
+
+const create = (form, route, body, id, successAlertId, exceptionAlertId) => {
     const req = new XMLHttpRequest();
 
     req.onreadystatechange = function () {
@@ -62,5 +71,5 @@ const create = (form, route, query, id, successAlertId, exceptionAlertId) => {
         true
     );
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    req.send(query);
+    req.send(jsonToRequestBody(body));
 };

@@ -13,8 +13,14 @@ window.addEventListener('DOMContentLoaded', function () {
         const successAlertId = "#contactCreateSuccess";
         const exceptionAlertId = "#contactCreateException";
         const route = "/app/Controllers/Contacts/ContactCreateController.php";
-        const query = `id=${id}&first_name=${firstName}&last_name=${lastName}&email=${email}&phone=${phone}`;
+        const body = {
+            id: id,
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            phone: phone,
+        }
 
-        create(button.closest('form'), route, query, id, successAlertId, exceptionAlertId);
+        create(button.closest('form'), route, body, id, successAlertId, exceptionAlertId);
     });
 });
