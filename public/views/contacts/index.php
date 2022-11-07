@@ -2,7 +2,12 @@
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Repositories/ContactModelRepo.php";
 
+$allContacts = null;
 $contacts = new ContactModelRepo();
+
+try {
+    $allContacts = $contacts->getAll();
+} catch (Exception $e) { }
 
 ?>
 
@@ -32,13 +37,14 @@ $contacts = new ContactModelRepo();
     </div>
 
     <div class="mb-4">
-        <h2 class="mb-3">View all contacts</h2>
-        <div class="alert alert-danger" style="display: none;" role="alert" id="contactDeleteException"></div>
-        <div class="alert alert-success" style="display: none;" role="alert" id="contactDeleteSuccess">
-            ✨ Success!
-        </div>
-        <table class="table table-striped">
-            <thead>
+        <?php if($allContacts): ?>
+            <h2 class="mb-3">View all contacts</h2>
+            <div class="alert alert-danger" style="display: none;" role="alert" id="contactDeleteException"></div>
+            <div class="alert alert-success" style="display: none;" role="alert" id="contactDeleteSuccess">
+                ✨ Success!
+            </div>
+            <table class="table table-striped">
+                <thead>
                 <tr>
                     <th>#</th>
                     <th>First name</th>
@@ -48,9 +54,9 @@ $contacts = new ContactModelRepo();
                     <th>Last update</th>
                     <th>Actions</th>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach($contacts->getAll() as $contact): ?>
+                </thead>
+                <tbody>
+                <?php foreach($allContacts as $contact): ?>
                     <tr>
                         <td><?= $contact->getId(); ?></td>
                         <td><?= $contact->getFirstName(); ?></td>
@@ -60,24 +66,29 @@ $contacts = new ContactModelRepo();
                         <td><?= $contact->getUpdatedAtTimestamp(); ?></td>
                         <td>
                             <a href="/public/views/contacts/edit.php?id=<?= $contact->getId(); ?>"
-                                class="btn btn-primary"
+                               class="btn btn-primary"
                             >
                                 View
                             </a>
 
                             <button
-                                onclick="deleteRow(this, <?= $contact->getId(); ?>,
-                                        '/app/Controllers/Contacts/ContactDeleteController.php',
-                                        '#contactDeleteException', '#contactDeleteSuccess')"
-                                class="btn btn-danger"
+                                    onclick="deleteRow(this, <?= $contact->getId(); ?>,
+                                            '/app/Controllers/Contacts/ContactDeleteController.php',
+                                            '#contactDeleteException', '#contactDeleteSuccess')"
+                                    class="btn btn-danger"
                             >
                                 Delete
                             </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <div class="alert alert-danger" role="alert">
+                Cannot load contacts!
+            </div>
+        <?php endif; ?>
     </div>
 </main>
 

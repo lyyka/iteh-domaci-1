@@ -5,6 +5,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/app/Controllers/Contacts/ContactEditC
 $controller = new ContactEditController();
 
 $model = null;
+$deals = null;
 
 try {
     $model = $controller->getContactById();
@@ -106,52 +107,58 @@ try {
 
             <h2 class="mb-4">Deals</h2>
 
-            <div class="alert alert-danger" style="display: none;" role="alert" id="dealDeleteException"></div>
-            <div class="alert alert-success" style="display: none;" role="alert" id="dealDeleteSuccess">
-                ✨ Success!
-            </div>
+            <?php if($deals): ?>
+                <div class="alert alert-danger" style="display: none;" role="alert" id="dealDeleteException"></div>
+                <div class="alert alert-success" style="display: none;" role="alert" id="dealDeleteSuccess">
+                    ✨ Success!
+                </div>
 
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Product</th>
-                    <th>Sales Person</th>
-                    <th>Value</th>
-                    <th>Notes</th>
-                    <th>Last update</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach($deals as $deal): ?>
+                <table class="table table-striped">
+                    <thead>
                     <tr>
-                        <td><?= $deal->getId(); ?></td>
-                        <td><?= $deal->getProduct()->getProductName(); ?></td>
-                        <td><?= $deal->getSalesPerson()->getName(); ?></td>
-                        <td><?= $deal->getDealValueLabel(); ?></td>
-                        <td><?= $deal->getNotes(); ?></td>
-                        <td><?= $deal->getUpdatedAtTimestamp(); ?></td>
-                        <td>
-                            <a href="/public/views/deals/edit.php?id=<?= $deal->getId(); ?>"
-                               class="btn btn-primary"
-                            >
-                                Edit
-                            </a>
-
-                            <button
-                                    onclick="deleteRow(this, <?= $deal->getId(); ?>,
-                                            '/app/Controllers/Deals/DealDeleteController.php',
-                                            '#dealDeleteException', '#dealDeleteSuccess')"
-                                    class="btn btn-danger"
-                            >
-                                Delete
-                            </button>
-                        </td>
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>Sales Person</th>
+                        <th>Value</th>
+                        <th>Notes</th>
+                        <th>Last update</th>
+                        <th>Actions</th>
                     </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <?php foreach($deals as $deal): ?>
+                        <tr>
+                            <td><?= $deal->getId(); ?></td>
+                            <td><?= $deal->getProduct()->getProductName(); ?></td>
+                            <td><?= $deal->getSalesPerson()->getName(); ?></td>
+                            <td><?= $deal->getDealValueLabel(); ?></td>
+                            <td><?= $deal->getNotes(); ?></td>
+                            <td><?= $deal->getUpdatedAtTimestamp(); ?></td>
+                            <td>
+                                <a href="/public/views/deals/edit.php?id=<?= $deal->getId(); ?>"
+                                   class="btn btn-primary"
+                                >
+                                    Edit
+                                </a>
+
+                                <button
+                                        onclick="deleteRow(this, <?= $deal->getId(); ?>,
+                                                '/app/Controllers/Deals/DealDeleteController.php',
+                                                '#dealDeleteException', '#dealDeleteSuccess')"
+                                        class="btn btn-danger"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <div class="alert alert-danger" role="alert">
+                    Cannot load deals!
+                </div>
+            <?php endif; ?>
         </div>
     <?php else : ?>
         <div class="alert alert-danger" role="alert">
@@ -163,6 +170,9 @@ try {
 <?php if($model) : ?>
     <script src="/public/js/create.js"></script>
     <script src="/public/js/contacts/create.js"></script>
+<?php endif; ?>
+
+<?php if($deals): ?>
     <script src="/public/js/delete.js"></script>
 <?php endif; ?>
 </body>
