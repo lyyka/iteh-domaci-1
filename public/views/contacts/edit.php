@@ -107,7 +107,7 @@ try {
 
             <h2 class="mb-4">Deals</h2>
 
-            <?php if($deals): ?>
+            <?php if($deals !== null): ?>
                 <div class="alert alert-danger" style="display: none;" role="alert" id="dealDeleteException"></div>
                 <div class="alert alert-success" style="display: none;" role="alert" id="dealDeleteSuccess">
                     ✨ Success!

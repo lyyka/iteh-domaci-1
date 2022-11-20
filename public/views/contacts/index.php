@@ -37,7 +37,7 @@ try {
     </div>
 
     <div class="mb-4">
-        <?php if($allContacts): ?>
+        <?php if($allContacts !== null): ?>
             <h2 class="mb-3">View all contacts</h2>
             <div class="alert alert-danger" style="display: none;" role="alert" id="contactDeleteException"></div>
             <div class="alert alert-success" style="display: none;" role="alert" id="contactDeleteSuccess">
